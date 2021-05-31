@@ -1,9 +1,11 @@
 import './App.css';
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import {uuid} from "uuidv4"
 import React, { useState, useEffect } from 'react'
 import Header from "./Header"
 import AddContact from "./AddContact"
 import ContactList from "./ContactList"
+import ContactDetail from './ContactDetail'
 function App() {
   const LOCAL_STORAGE_KEY ="Kritebh"
   const [Contacts, setContacts] = useState([])
@@ -36,9 +38,14 @@ useEffect(()=>{
 
   return (
     <div className="ui container">
+    <Router>
       <Header />
-      <AddContact addContactHandler={addContactHandler} />
-      <ContactList contacts={Contacts} getContactId={DeleteContact}/>
+      <Switch>
+      <Route path="/add" render={(props)=>(<AddContact {...props} addContactHandler={addContactHandler} />)} />
+      <Route path="/" exact render={(props)=>(<ContactList {...props} contacts={Contacts} getContactId={DeleteContact} />)} />
+      <Route path="/contact/:id" component={ContactDetail}/ >
+      </Switch>
+    </Router>
     </div>
   );
 }
